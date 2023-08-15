@@ -8,5 +8,6 @@ func main() {
 		fmt.Printf("unable to load the Bakefile, %v", err)
 		return
 	}
+	defer f.Close()
 	fmt.Printf("%v\n", f)
 }
