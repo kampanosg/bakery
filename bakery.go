@@ -18,9 +18,9 @@ func main() {
 		return
 	}
 
-	cmd := "help"
+	r := "list"
 	runner := NewDefaultRunner()
-	if err := runner.RunCommand(recipe, cmd); err != nil {
+	if err := runner.RunCommand(recipe, r); err != nil {
 		fmt.Printf("command failed, %v", err)
 		return
 	}

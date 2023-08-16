@@ -28,13 +28,19 @@ func NewDefaultRunner() *Runner {
 	}
 }
 
-func (r *Runner) RunCommand(b *Bakery, cmd string) error {
-	switch cmd {
-	case HelpCommand:
-		fmt.Printf("help me\n")
-	default:
-		fmt.Printf("not found\n")
+func (r *Runner) RunCommand(b *Bakery, recipe string) error {
+	rcp, ok := b.Recipes[recipe]
+	if !ok {
+		return fmt.Errorf("recipe not found, %s", recipe)
 	}
+
+	for i, step := range rcp.Steps {
+		fmt.Printf("[%d/%d] - %s\n", i, len(rcp.Steps), step)
+		if err := r.executor.Run(step); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
