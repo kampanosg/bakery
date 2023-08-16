@@ -52,7 +52,7 @@ func (r *Runner) RunCommand(b *Bakery, args []string) error {
 	for i, step := range rcp.Steps {
 		fmt.Printf("[%d/%d] - %s\n", i+1, len(rcp.Steps), step)
 		if err := r.executor.Run(step); err != nil {
-			return err
+			return fmt.Errorf("unable to run step %s, %w", step, err)
 		}
 	}
 
@@ -65,7 +65,7 @@ func (e *DefaultExecutor) Run(cmd string) error {
 	c.Stderr = os.Stderr
 
 	if err := c.Run(); err != nil {
-		return err
+		return fmt.Errorf("err: %w", err)
 	}
 
 	return nil
