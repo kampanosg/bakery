@@ -5,7 +5,7 @@ import "testing"
 func TestBakery_Valid(t *testing.T) {
 	type fields struct {
 		Version string
-		Recipes []Recipe
+		Recipes map[string]Recipe
 	}
 	tests := []struct {
 		name    string
@@ -23,7 +23,7 @@ func TestBakery_Valid(t *testing.T) {
 			name: "success empty recipes",
 			fields: fields{
 				Version: "1",
-				Recipes: []Recipe{},
+				Recipes: map[string]Recipe{},
 			},
 			wantErr: false,
 		},
@@ -31,8 +31,8 @@ func TestBakery_Valid(t *testing.T) {
 			name: "success",
 			fields: fields{
 				Version: "1",
-				Recipes: []Recipe{
-					{
+				Recipes: map[string]Recipe{
+					"list": {
 						Description: "a step to list the filesystem",
 						Default:     false,
 						Steps: []string{
