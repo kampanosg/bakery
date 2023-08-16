@@ -7,14 +7,18 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-func ParseBakefile(f *os.File) (*Recipe, error) {
+func ParseBakefile(f *os.File) (*Bakery, error) {
 	content, err := ioutil.ReadAll(f)
 	if err != nil {
 		return nil, err
 	}
 
-	var r Recipe
+	var r Bakery
 	if err := yaml.Unmarshal(content, &r); err != nil {
+		return nil, err
+	}
+
+	if err := r.Valid(); err != nil {
 		return nil, err
 	}
 
