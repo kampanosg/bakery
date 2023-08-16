@@ -28,14 +28,19 @@ func NewDefaultRunner() *Runner {
 	}
 }
 
-func (r *Runner) RunCommand(b *Bakery, recipe string) error {
+func (r *Runner) RunCommand(b *Bakery, args []string) error {
+	if len(args) == 0 {
+		return fmt.Errorf("not enough args provided")
+	}
+	recipe := args[0]
+
 	rcp, ok := b.Recipes[recipe]
 	if !ok {
 		return fmt.Errorf("recipe not found, %s", recipe)
 	}
 
 	for i, step := range rcp.Steps {
-		fmt.Printf("[%d/%d] - %s\n", i, len(rcp.Steps), step)
+		fmt.Printf("[%d/%d] - %s\n", i+1, len(rcp.Steps), step)
 		if err := r.executor.Run(step); err != nil {
 			return err
 		}

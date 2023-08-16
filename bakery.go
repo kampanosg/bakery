@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 )
 
 func main() {
@@ -18,10 +19,11 @@ func main() {
 		return
 	}
 
-	r := "list"
+	args := os.Args[1:]
+
 	runner := NewDefaultRunner()
-	if err := runner.RunCommand(recipe, r); err != nil {
-		fmt.Printf("command failed, %v", err)
+	if err := runner.RunCommand(recipe, args); err != nil {
+		fmt.Printf("run failed, %v", err)
 		return
 	}
 
