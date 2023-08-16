@@ -45,12 +45,16 @@ func TestBakery_Valid(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			tc := tt
+
+			t.Parallel()
+
 			r := &Bakery{
-				Version: tt.fields.Version,
-				Recipes: tt.fields.Recipes,
+				Version: tc.fields.Version,
+				Recipes: tc.fields.Recipes,
 			}
-			if err := r.Valid(); (err != nil) != tt.wantErr {
-				t.Errorf("Bakery.Valid() error = %v, wantErr %v", err, tt.wantErr)
+			if err := r.Valid(); (err != nil) != tc.wantErr {
+				t.Errorf("Bakery.Valid() error = %v, wantErr %v", err, tc.wantErr)
 			}
 		})
 	}

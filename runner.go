@@ -28,7 +28,17 @@ func NewDefaultRunner() *Runner {
 	}
 }
 
+func NewRunner(e CommandExecutor) *Runner {
+	return &Runner{
+		executor: e,
+	}
+}
+
 func (r *Runner) RunCommand(b *Bakery, args []string) error {
+	if b == nil {
+		return fmt.Errorf("nil bakery")
+	}
+
 	if len(args) == 0 {
 		return fmt.Errorf("not enough args provided")
 	}
@@ -36,7 +46,7 @@ func (r *Runner) RunCommand(b *Bakery, args []string) error {
 
 	rcp, ok := b.Recipes[recipe]
 	if !ok {
-		return fmt.Errorf("recipe not found, %s", recipe)
+		return fmt.Errorf("undefined recipe, %s", recipe)
 	}
 
 	for i, step := range rcp.Steps {
