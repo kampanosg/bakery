@@ -14,7 +14,7 @@ func main() {
 
 	recipe, err := ParseBakefile(f)
 	if err != nil {
-		fmt.Printf("unable to parse the Bafile, %v", err)
+		fmt.Printf("unable to parse the Bakefile, %v", err)
 		return
 	}
 
