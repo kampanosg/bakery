@@ -28,7 +28,7 @@ func NewDefaultRunner() *Runner {
 	}
 }
 
-func (r *Runner) RunCommand(recipe Recipe, cmd string) error {
+func (r *Runner) RunCommand(b *Bakery, cmd string) error {
 	switch cmd {
 	case HelpCommand:
 		fmt.Printf("help me\n")

@@ -18,5 +18,12 @@ func main() {
 		return
 	}
 
-	fmt.Printf("%v\n", recipe.Version)
+	cmd := "help"
+	runner := NewDefaultRunner()
+	if err := runner.RunCommand(recipe, cmd); err != nil {
+		fmt.Printf("command failed, %v", err)
+		return
+	}
+
+	fmt.Printf("done 🧁\n")
 }
