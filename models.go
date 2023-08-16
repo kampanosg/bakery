@@ -4,8 +4,8 @@ import "fmt"
 
 type (
 	Bakery struct {
-		Version string   `yaml:"version"`
-		Recipes []Recipe `yaml:"recipes"`
+		Version string            `yaml:"version"`
+		Recipes map[string]Recipe `yaml:"recipes"`
 	}
 
 	Recipe struct {
