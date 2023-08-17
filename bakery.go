@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	f, err := LoadBakefile()
+	f, err := LoadDefaultBakefile()
 	if err != nil {
 		fmt.Printf("unable to load the Bakefile, %v", err)
 		return

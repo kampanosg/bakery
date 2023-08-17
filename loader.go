@@ -1,15 +1,28 @@
 package main
 
-import "os"
+import (
+	"fmt"
+	"os"
+)
 
 const (
 	DefaultBakefile = "./Bakefile"
 )
 
-func LoadBakefile() (*os.File, error) {
-	file, err := os.Open(DefaultBakefile)
-	if err != nil {
-		return nil, err
+var (
+	DefaultBakefiles = []string{
+		"./Bakefile",
+		"./Bakefile.yaml",
 	}
-	return file, nil
+)
+
+func LoadDefaultBakefile() (*os.File, error) {
+	for _, b := range DefaultBakefiles {
+		file, err := os.Open(b)
+		if err != nil {
+			continue
+		}
+		return file, nil
+	}
+	return nil, fmt.Errorf("unable to find Bakefile")
 }
