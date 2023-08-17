@@ -42,11 +42,22 @@ func (r *Runner) RunCommand(b *Bakery, args []string) error {
 	if len(args) == 0 {
 		return fmt.Errorf("not enough args provided")
 	}
-	recipe := args[0]
+	input := args[0]
 
-	rcp, ok := b.Recipes[recipe]
+	switch input {
+	case HelpCommand:
+		r.printHelp()
+	default:
+		r.run(b, input)
+	}
+
+	return nil
+}
+
+func (r *Runner) run(b *Bakery, input string) error {
+	rcp, ok := b.Recipes[input]
 	if !ok {
-		return fmt.Errorf("undefined recipe, %s", recipe)
+		return fmt.Errorf("undefined recipe, %s", input)
 	}
 
 	for i, step := range rcp.Steps {
