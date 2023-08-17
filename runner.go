@@ -81,7 +81,7 @@ func (r *Runner) printHelp(b *Bakery) {
 }
 
 func (r *Runner) printVersion(b *Bakery) {
-	fmt.Printf("Bakefile Version: %s", b.Version)
+	fmt.Printf("Bakefile Version: %s\n", b.Version)
 }
 
 func (e *DefaultExecutor) Run(cmd string) error {
