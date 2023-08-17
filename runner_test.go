@@ -96,6 +96,25 @@ func TestRunner_RunCommand(t *testing.T) {
 			wantErr: true,
 		},
 		{
+			name: "success when no defaults",
+			fields: args{
+				b: &Bakery{
+					Defaults: []string{},
+					Recipes: map[string]Recipe{
+						"build": {
+							Steps: []string{"go build -o app ./..."},
+						},
+					},
+				},
+			},
+			executor: &testCommandExecutor{
+				executorHandler: func(cmd string) error {
+					return nil
+				},
+			},
+			wantErr: false,
+		},
+		{
 			name: "success defaults",
 			fields: args{
 				b: &Bakery{
