@@ -89,6 +89,28 @@ func TestRunner_RunCommand(t *testing.T) {
 			wantErr: false,
 		},
 		{
+			name: "success calling other recipes",
+			fields: args{
+				b: &Bakery{
+					Recipes: map[string]Recipe{
+						"build": {
+							Steps: []string{"go build *.go"},
+						},
+						"run": {
+							Steps: []string{"build"},
+						},
+					},
+				},
+				args: []string{"run"},
+			},
+			executor: &testCommandExecutor{
+				executorHandler: func(cmd string) error {
+					return nil
+				},
+			},
+			wantErr: false,
+		},
+		{
 			name: "success, print help",
 			fields: args{
 				b: &Bakery{
