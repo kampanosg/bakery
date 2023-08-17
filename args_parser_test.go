@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 
-	match "github.com/kampanosg/go-match-slices"
+	"github.com/kampanosg/match"
 )
 
 func TestParseArgs(t *testing.T) {
@@ -55,7 +55,7 @@ func TestParseArgs(t *testing.T) {
 			t.Parallel()
 
 			got := ParseArgs(tc.args)
-			match.MatchExactly(t, tc.want, got)
+			match.Exactly(t, tc.want, got)
 		})
 	}
 }
