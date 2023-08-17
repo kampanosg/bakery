@@ -68,8 +68,8 @@ func (r *Runner) run(b *Bakery, input string) error {
 }
 
 func (r *Runner) runSteps(b *Bakery, steps []string) error {
-	for i, step := range steps {
-		fmt.Printf("[%d/%d] - %s\n", i+1, len(steps), step)
+	for _, step := range steps {
+		fmt.Printf("%s\n", step)
 
 		recipe, ok := b.Recipes[step]
 		if ok {
