@@ -110,6 +110,16 @@ func TestRunner_RunCommand(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			name: "success, print version",
+			fields: args{
+				b: &Bakery{
+					Version: "0.6.9",
+				},
+				args: []string{"version"},
+			},
+			wantErr: false,
+		},
 	}
 
 	for _, tt := range tests {

@@ -7,7 +7,8 @@ import (
 )
 
 const (
-	HelpCommand = "help"
+	HelpCmd    = "help"
+	VersionCmd = "version"
 )
 
 type (
@@ -45,8 +46,10 @@ func (r *Runner) RunCommand(b *Bakery, args []string) error {
 	input := args[0]
 
 	switch input {
-	case HelpCommand:
+	case HelpCmd:
 		r.printHelp(b)
+	case VersionCmd:
+		r.printVersion(b)
 	default:
 		return r.run(b, input)
 	}
@@ -75,6 +78,10 @@ func (r *Runner) printHelp(b *Bakery) {
 	for k, r := range b.Recipes {
 		fmt.Printf("- %s: %s\n", k, r.Description)
 	}
+}
+
+func (r *Runner) printVersion(b *Bakery) {
+	fmt.Printf("Bakefile Version: %s", b.Version)
 }
 
 func (e *DefaultExecutor) Run(cmd string) error {
