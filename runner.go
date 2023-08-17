@@ -7,7 +7,8 @@ import (
 )
 
 const (
-	HelpCommand = "help"
+	HelpCmd    = "help"
+	VersionCmd = "version"
 )
 
 type (
@@ -42,11 +43,24 @@ func (r *Runner) RunCommand(b *Bakery, args []string) error {
 	if len(args) == 0 {
 		return fmt.Errorf("not enough args provided")
 	}
-	recipe := args[0]
+	input := args[0]
 
-	rcp, ok := b.Recipes[recipe]
+	switch input {
+	case HelpCmd:
+		r.printHelp(b)
+	case VersionCmd:
+		r.printVersion(b)
+	default:
+		return r.run(b, input)
+	}
+
+	return nil
+}
+
+func (r *Runner) run(b *Bakery, input string) error {
+	rcp, ok := b.Recipes[input]
 	if !ok {
-		return fmt.Errorf("undefined recipe, %s", recipe)
+		return fmt.Errorf("undefined recipe, %s", input)
 	}
 
 	for i, step := range rcp.Steps {
@@ -57,6 +71,17 @@ func (r *Runner) RunCommand(b *Bakery, args []string) error {
 	}
 
 	return nil
+}
+
+func (r *Runner) printHelp(b *Bakery) {
+	fmt.Printf("Available Recipes in Bakefile:\n")
+	for k, r := range b.Recipes {
+		fmt.Printf("- %s: %s\n", k, r.Description)
+	}
+}
+
+func (r *Runner) printVersion(b *Bakery) {
+	fmt.Printf("Bakefile Version: %s", b.Version)
 }
 
 func (e *DefaultExecutor) Run(cmd string) error {
