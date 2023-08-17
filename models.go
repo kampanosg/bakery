@@ -4,13 +4,13 @@ import "fmt"
 
 type (
 	Bakery struct {
-		Version string            `yaml:"version"`
-		Recipes map[string]Recipe `yaml:"recipes"`
+		Version  string            `yaml:"version"`
+		Defaults []string          `yaml:"defaults"`
+		Recipes  map[string]Recipe `yaml:"recipes"`
 	}
 
 	Recipe struct {
 		Description string   `yaml:"description"`
-		Default     bool     `yaml:"default"`
 		Steps       []string `yaml:"steps"`
 	}
 )
