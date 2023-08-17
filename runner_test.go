@@ -88,6 +88,28 @@ func TestRunner_RunCommand(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			name: "success, print help",
+			fields: args{
+				b: &Bakery{
+					Recipes: map[string]Recipe{
+						"build": {
+							Steps:       []string{"go build *.go"},
+							Description: "builds the project using go",
+						},
+						"test": {
+							Steps:       []string{"go test -v ./..."},
+							Description: "",
+						},
+						"run": {
+							Steps: []string{"./run"},
+						},
+					},
+				},
+				args: []string{"help"},
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
