@@ -63,13 +63,26 @@ func (r *Runner) run(b *Bakery, input string) error {
 		return fmt.Errorf("undefined recipe, %s", input)
 	}
 
-	for i, step := range rcp.Steps {
-		fmt.Printf("[%d/%d] - %s\n", i+1, len(rcp.Steps), step)
+	return r.runSteps(b, rcp.Steps)
+}
+
+func (r *Runner) runSteps(b *Bakery, steps []string) error {
+	for i, step := range steps {
+		fmt.Printf("[%d/%d] - %s\n", i+1, len(steps), step)
+
+		recipe, ok := b.Recipes[step]
+		if ok {
+			err := r.runSteps(b, recipe.Steps)
+			if err != nil {
+				return err
+			}
+			continue
+		}
+
 		if err := r.executor.Run(step); err != nil {
 			return fmt.Errorf("unable to run step %s, %w", step, err)
 		}
 	}
-
 	return nil
 }
 
