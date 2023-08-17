@@ -63,7 +63,6 @@ func (r *Runner) run(b *Bakery, input string) error {
 	if !ok {
 		return fmt.Errorf("undefined recipe, %s", input)
 	}
-
 	return r.runSteps(b, rcp.Steps)
 }
 

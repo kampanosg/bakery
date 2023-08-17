@@ -32,13 +32,6 @@ func TestRunner_RunCommand(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "error no args",
-			fields: args{
-				b: &Bakery{},
-			},
-			wantErr: true,
-		},
-		{
 			name: "error undefined recipe",
 			fields: args{
 				b: &Bakery{
@@ -68,6 +61,58 @@ func TestRunner_RunCommand(t *testing.T) {
 				},
 			},
 			wantErr: true,
+		},
+		{
+			name: "error when default doesnt exist",
+			fields: args{
+				b: &Bakery{
+					Defaults: []string{"run"},
+					Recipes: map[string]Recipe{
+						"build": {
+							Steps: []string{"go build -o app ./..."},
+						},
+					},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "error when default step fails",
+			fields: args{
+				b: &Bakery{
+					Defaults: []string{"build"},
+					Recipes: map[string]Recipe{
+						"build": {
+							Steps: []string{"go bild -o app ./..."},
+						},
+					},
+				},
+			},
+			executor: &testCommandExecutor{
+				executorHandler: func(cmd string) error {
+					return errors.New("unable to run command")
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "success defaults",
+			fields: args{
+				b: &Bakery{
+					Defaults: []string{"build"},
+					Recipes: map[string]Recipe{
+						"build": {
+							Steps: []string{"go build -o app ./..."},
+						},
+					},
+				},
+			},
+			executor: &testCommandExecutor{
+				executorHandler: func(cmd string) error {
+					return nil
+				},
+			},
+			wantErr: false,
 		},
 		{
 			name: "success",
