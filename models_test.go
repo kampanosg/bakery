@@ -34,7 +34,6 @@ func TestBakery_Valid(t *testing.T) {
 				Recipes: map[string]Recipe{
 					"list": {
 						Description: "a step to list the filesystem",
-						Default:     false,
 						Steps: []string{
 							"ls -al",
 						},
