@@ -5,14 +5,11 @@ import (
 	"os"
 )
 
-const (
-	DefaultBakefile = "./Bakefile"
-)
-
 var (
 	DefaultBakefiles = []string{
 		"./Bakefile",
 		"./Bakefile.yaml",
+		"./Bakefile.yml",
 	}
 )
 

@@ -26,6 +26,4 @@ func main() {
 		fmt.Printf("run failed, %v", err)
 		return
 	}
-
-	fmt.Printf("done 🧁\n")
 }
