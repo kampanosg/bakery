@@ -41,8 +41,9 @@ func (r *Runner) RunCommand(b *Bakery, args []string) error {
 	}
 
 	if len(args) == 0 {
-		return fmt.Errorf("not enough args provided")
+		return r.runDefaults(b)
 	}
+
 	input := args[0]
 
 	switch input {
@@ -72,15 +73,28 @@ func (r *Runner) runSteps(b *Bakery, steps []string) error {
 
 		recipe, ok := b.Recipes[step]
 		if ok {
-			err := r.runSteps(b, recipe.Steps)
-			if err != nil {
-				return err
+			if err := r.runSteps(b, recipe.Steps); err != nil {
+				return fmt.Errorf("unable to run steps, %w", err)
 			}
 			continue
 		}
 
 		if err := r.executor.Run(step); err != nil {
 			return fmt.Errorf("unable to run step %s, %w", step, err)
+		}
+	}
+	return nil
+}
+
+func (r *Runner) runDefaults(b *Bakery) error {
+	for _, d := range b.Defaults {
+		recipe, ok := b.Recipes[d]
+		if !ok {
+			return fmt.Errorf("undefined recipe %s", d)
+		}
+
+		if err := r.runSteps(b, recipe.Steps); err != nil {
+			return fmt.Errorf("unable to run steps, %w", err)
 		}
 	}
 	return nil
