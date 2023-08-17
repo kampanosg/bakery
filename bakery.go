@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"strings"
 )
 
 func main() {
@@ -32,15 +31,7 @@ func main() {
 		return
 	}
 
-	args := make([]string, 0)
-	for i := 1; i <= len(os.Args[1:]); i++ {
-		arg := os.Args[i]
-		if strings.HasPrefix(arg, "--") {
-			i += 1
-			continue
-		}
-		args = append(args, arg)
-	}
+	args := ParseArgs(os.Args)
 
 	runner := NewDefaultRunner()
 	if err := runner.RunCommand(recipe, args); err != nil {
