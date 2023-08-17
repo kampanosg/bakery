@@ -46,9 +46,9 @@ func (r *Runner) RunCommand(b *Bakery, args []string) error {
 
 	switch input {
 	case HelpCommand:
-		r.printHelp()
+		r.printHelp(b)
 	default:
-		r.run(b, input)
+		return r.run(b, input)
 	}
 
 	return nil
@@ -68,6 +68,13 @@ func (r *Runner) run(b *Bakery, input string) error {
 	}
 
 	return nil
+}
+
+func (r *Runner) printHelp(b *Bakery) {
+	fmt.Printf("Available Recipes in Bakefile:\n")
+	for k, r := range b.Recipes {
+		fmt.Printf("- %s: %s\n", k, r.Description)
+	}
 }
 
 func (e *DefaultExecutor) Run(cmd string) error {
