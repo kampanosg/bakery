@@ -1,9 +1,8 @@
-package main
+package runner
 
 import (
+	"bytes"
 	"fmt"
-	"os"
-	"os/exec"
 
 	"github.com/kampanosg/bakery/internal/models"
 )
@@ -15,26 +14,18 @@ const (
 )
 
 type (
-	CommandExecutor interface {
+	CommandAgent interface {
 		Run(cmd string) error
 	}
 
 	Runner struct {
-		executor CommandExecutor
+		agent CommandAgent
 	}
-
-	DefaultExecutor struct{}
 )
 
-func NewDefaultRunner() *Runner {
+func NewRunner(e CommandAgent) *Runner {
 	return &Runner{
-		executor: &DefaultExecutor{},
-	}
-}
-
-func NewRunner(e CommandExecutor) *Runner {
-	return &Runner{
-		executor: e,
+		agent: e,
 	}
 }
 
@@ -47,18 +38,21 @@ func (r *Runner) RunCommand(b *models.Bakery, args []string) error {
 		return r.runDefaults(b)
 	}
 
+	var print string
 	input := args[0]
 
 	switch input {
 	case HelpCmd:
-		r.printHelp(b)
+		print = r.GetPrintableVersion(b)
 	case VersionCmd:
-		r.printVersion(b)
+		print = r.GetPrintableVersion(b)
 	case AuthorCmd:
-		r.printAuthor(b)
+		print = r.GetPrintableAuthor(b)
 	default:
 		return r.run(b, input)
 	}
+
+	fmt.Println(print)
 
 	return nil
 }
@@ -83,7 +77,7 @@ func (r *Runner) runSteps(b *models.Bakery, steps []string) error {
 			continue
 		}
 
-		if err := r.executor.Run(step); err != nil {
+		if err := r.agent.Run(step); err != nil {
 			return fmt.Errorf("unable to run step %s, %w", step, err)
 		}
 	}
@@ -104,33 +98,24 @@ func (r *Runner) runDefaults(b *models.Bakery) error {
 	return nil
 }
 
-func (r *Runner) printHelp(b *models.Bakery) {
-	fmt.Printf("Available Recipes in Bakefile:\n")
+func (r *Runner) GetPrintableHelp(b *models.Bakery) string {
+	var buffer bytes.Buffer
+	buffer.WriteString("Available Recipes in Bakefile:\n")
 	for k, r := range b.Recipes {
-		fmt.Printf("- %s: %s\n", k, r.Description)
+		buffer.WriteString(fmt.Sprintf("- %s: %s\n", k, r.Description))
 	}
+	return buffer.String()
 }
 
-func (r *Runner) printVersion(b *models.Bakery) {
-	fmt.Printf("Bakefile Version: %s\n", b.Version)
+func (r *Runner) GetPrintableVersion(b *models.Bakery) string {
+	return fmt.Sprintf("Bakefile Version: %s", b.Version)
 }
 
-func (r *Runner) printAuthor(b *models.Bakery) {
-	fmt.Printf("Bakefile Author: ")
+func (r *Runner) GetPrintableAuthor(b *models.Bakery) string {
+	var buffer bytes.Buffer
+	buffer.WriteString("Bakefile Author: ")
 	if author, ok := b.Metadata["author"]; ok {
-		fmt.Printf("%s", author)
+		buffer.WriteString(fmt.Sprintf("%s", author))
 	}
-	fmt.Printf("\n")
-}
-
-func (e *DefaultExecutor) Run(cmd string) error {
-	c := exec.Command("sh", "-c", cmd)
-	c.Stdout = os.Stdout
-	c.Stderr = os.Stderr
-
-	if err := c.Run(); err != nil {
-		return fmt.Errorf("err: %w", err)
-	}
-
-	return nil
+	return buffer.String()
 }

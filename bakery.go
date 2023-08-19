@@ -7,6 +7,7 @@ import (
 
 	"github.com/kampanosg/bakery/internal/loader"
 	"github.com/kampanosg/bakery/internal/parser"
+	"github.com/kampanosg/bakery/internal/runner"
 )
 
 func main() {
@@ -38,7 +39,7 @@ func main() {
 
 	args := ParseArgs(os.Args)
 
-	runner := NewDefaultRunner()
+	runner := runner.NewRunner(&runner.OSAgent{})
 	if err := runner.RunCommand(recipe, args); err != nil {
 		fmt.Printf("run failed, %v\n", err)
 		return
