@@ -16,9 +16,18 @@ WIP...
 ### Syntax
 Below are the keywords that the `Bakefile` can contain
 
-| keyword   | type     | optional   | description                                                          |
-| --------- | -------- | ---------- | -------------------------------------------------------------------- |
-| `version` | `string` | ✅         | a user-defined version that can have any format e.g: `1` or `v1.2.3` |
+| keyword    | type                | optional | description                                                               |
+| ---------- | ------------------- | -------- | ------------------------------------------------------------------------- |
+| `version`  | `string`            | Y        | a user-defined version that can have any format e.g: `1` or `v1.2.3`      |
+| `metadata` | `map[string]string` | Y        | any user-defined key-value pair. for example: `author: John`              |
+| `defaults` | `[]string`          | Y        | a list of recipes that will be called if no recipe is passed at execution |
+| `recipes`  | `[]Recipe`          | N        | the list of recipes, see the table below how to define them               |
+
+The `Recipe` syntax is defined below
+| keyword       | type       | optional | description                                                           |
+| ------------- | ---------- | -------- | --------------------------------------------------------------------- |
+| `description` | `string`   | Y        | a brief explanation of what the recipe does. used for the `bake help` |
+| `steps`       | `[]string` | N        | the commands that the `recipe` executes                               |
 
 ### Builtins
 The following builtin functions are available with `bake`
