@@ -9,6 +9,7 @@ import (
 const (
 	HelpCmd    = "help"
 	VersionCmd = "version"
+	AuthorCmd  = "author"
 )
 
 type (
@@ -51,6 +52,8 @@ func (r *Runner) RunCommand(b *Bakery, args []string) error {
 		r.printHelp(b)
 	case VersionCmd:
 		r.printVersion(b)
+	case AuthorCmd:
+		r.printAuthor(b)
 	default:
 		return r.run(b, input)
 	}
@@ -108,6 +111,14 @@ func (r *Runner) printHelp(b *Bakery) {
 
 func (r *Runner) printVersion(b *Bakery) {
 	fmt.Printf("Bakefile Version: %s\n", b.Version)
+}
+
+func (r *Runner) printAuthor(b *Bakery) {
+	fmt.Printf("Bakefile Author: ")
+	if author, ok := b.Metadata["author"]; ok {
+		fmt.Printf("%s", author)
+	}
+	fmt.Printf("\n")
 }
 
 func (e *DefaultExecutor) Run(cmd string) error {
