@@ -21,7 +21,7 @@ func LoadDefaultBakefile() (*os.File, error) {
 		}
 		return file, nil
 	}
-	return nil, fmt.Errorf("unable to find Bakefile")
+	return nil, fmt.Errorf("Bakefile not found")
 }
 
 func LoadBakefileFromLocation(path string) (*os.File, error) {

@@ -4,6 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"os"
+
+	"github.com/kampanosg/bakery/internal/parser"
 )
 
 func main() {
@@ -25,7 +27,7 @@ func main() {
 	}
 	defer f.Close()
 
-	recipe, err := ParseBakefile(f)
+	recipe, err := parser.ParseBakefile(f)
 	if err != nil {
 		fmt.Printf("unable to parse the Bakefile, %v\n", err)
 		return
