@@ -1,0 +1,6 @@
+defaults:
+    - list
+recipes:
+    list:
+        steps:
+            - "ls -al"

@@ -1,0 +1,6 @@
+metadata:
+    author: "Golan Trevize"
+recipes:
+    list:
+        steps:
+            - "ls -al"

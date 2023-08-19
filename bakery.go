@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/kampanosg/bakery/internal/loader"
 	"github.com/kampanosg/bakery/internal/parser"
 )
 
@@ -15,10 +16,12 @@ func main() {
 	var f *os.File
 	var err error
 
+	l := loader.NewBakefileLoader(&loader.DefaultFileOpener{})
+
 	if *file == "" {
-		f, err = LoadDefaultBakefile()
+		f, err = l.LoadDefaultBakefile()
 	} else {
-		f, err = LoadBakefileFromLocation(*file)
+		f, err = l.LoadBakefileFromLocation(*file)
 	}
 
 	if err != nil {

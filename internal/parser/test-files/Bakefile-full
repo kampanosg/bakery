@@ -1,0 +1,10 @@
+version: v1
+metadata:
+    author: "Golan Trevize"
+defaults:
+    - list
+recipes:
+    list:
+        description: "list the current directory"
+        steps:
+            - "ls -al"
