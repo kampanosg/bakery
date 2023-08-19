@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+
+	"github.com/kampanosg/bakery/internal/models"
 )
 
 const (
@@ -36,7 +38,7 @@ func NewRunner(e CommandExecutor) *Runner {
 	}
 }
 
-func (r *Runner) RunCommand(b *Bakery, args []string) error {
+func (r *Runner) RunCommand(b *models.Bakery, args []string) error {
 	if b == nil {
 		return fmt.Errorf("nil bakery")
 	}
@@ -61,7 +63,7 @@ func (r *Runner) RunCommand(b *Bakery, args []string) error {
 	return nil
 }
 
-func (r *Runner) run(b *Bakery, input string) error {
+func (r *Runner) run(b *models.Bakery, input string) error {
 	rcp, ok := b.Recipes[input]
 	if !ok {
 		return fmt.Errorf("undefined recipe, %s", input)
@@ -69,7 +71,7 @@ func (r *Runner) run(b *Bakery, input string) error {
 	return r.runSteps(b, rcp.Steps)
 }
 
-func (r *Runner) runSteps(b *Bakery, steps []string) error {
+func (r *Runner) runSteps(b *models.Bakery, steps []string) error {
 	for _, step := range steps {
 		fmt.Printf("%s\n", step)
 
@@ -88,7 +90,7 @@ func (r *Runner) runSteps(b *Bakery, steps []string) error {
 	return nil
 }
 
-func (r *Runner) runDefaults(b *Bakery) error {
+func (r *Runner) runDefaults(b *models.Bakery) error {
 	for _, d := range b.Defaults {
 		recipe, ok := b.Recipes[d]
 		if !ok {
@@ -102,18 +104,18 @@ func (r *Runner) runDefaults(b *Bakery) error {
 	return nil
 }
 
-func (r *Runner) printHelp(b *Bakery) {
+func (r *Runner) printHelp(b *models.Bakery) {
 	fmt.Printf("Available Recipes in Bakefile:\n")
 	for k, r := range b.Recipes {
 		fmt.Printf("- %s: %s\n", k, r.Description)
 	}
 }
 
-func (r *Runner) printVersion(b *Bakery) {
+func (r *Runner) printVersion(b *models.Bakery) {
 	fmt.Printf("Bakefile Version: %s\n", b.Version)
 }
 
-func (r *Runner) printAuthor(b *Bakery) {
+func (r *Runner) printAuthor(b *models.Bakery) {
 	fmt.Printf("Bakefile Author: ")
 	if author, ok := b.Metadata["author"]; ok {
 		fmt.Printf("%s", author)
