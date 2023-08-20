@@ -37,11 +37,10 @@ func main() {
 		return
 	}
 
-	args := ParseArgs(os.Args)
+	args := parser.ParseArgs(os.Args)
 
-	runner := runner.NewRunner(&runner.OSAgent{})
-	if err := runner.RunCommand(recipe, args); err != nil {
+	r := runner.NewRunner(&runner.OSAgent{})
+	if err := r.RunCommand(recipe, args); err != nil {
 		fmt.Printf("run failed, %v\n", err)
-		return
 	}
 }
