@@ -3,9 +3,7 @@
 
 Bakery is an (opinionated) automation tool designed to simplify repetitive, time-consuming and error prone commands. It uses YAML instead of a propriatery language and provides handy defaults, such as `help` and `version`. Its main goal is to make the developer experience more familiar, flexible and friendly while being fast and reliable.
 
-<p align="center">
-
-</p>
+https://github.com/kampanosg/bakery/assets/30287348/deb1b130-042f-4e18-b792-2103fd5c008f
 
 ## Installation
 Bakery can be installed with the following methods:
@@ -42,6 +40,8 @@ The `Recipe` syntax is defined below
 | ------------- | ---------- | -------- | --------------------------------------------------------------------- |
 | `description` | `string`   | Y        | a brief explanation of what the recipe does. used for the `bake help` |
 | `steps`       | `[]string` | N        | the commands that the `recipe` executes                               |
+
+ℹ️ A `step` can reference a `recipe`
 
 ### Builtins
 The following builtin functions are available with `bake`
