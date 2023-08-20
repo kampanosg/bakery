@@ -3,7 +3,7 @@
 
 [![Pipeline](https://github.com/kampanosg/bakery/actions/workflows/go.yml/badge.svg)](https://github.com/kampanosg/bakery/actions/workflows/go.yml)
 
-Bakery is an (opinionated) alternative to the popular [GNU make](https://www.gnu.org/software/make/manual/make.html) tool. It uses YAML instead of a custom syntax and provides handy defaults, such as `help`, `version` and `metadata`. Its main goal is to make the developer experience more familiar and friendly while being fast and reliable.
+Bakery is an (opinionated) automation tool designed to simplify repetitive, time-consuming and error prone commands. It uses YAML instead of a propriatery language and provides handy defaults, such as `help` and `version`. Its main goal is to make the developer experience more familiar, flexible and friendly while being fast and reliable.
 
 ## Installation
 Bakery can be installed with the following methods:
