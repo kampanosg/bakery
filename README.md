@@ -6,14 +6,24 @@
 Bakery is an (opinionated) alternative to the popular [GNU make](https://www.gnu.org/software/make/manual/make.html) tool. It uses YAML instead of a custom syntax and provides handy defaults, such as `help`, `version` and `metadata`. Its main goal is to make the developer experience more familiar and friendly while being fast and reliable.
 
 ## Installation
-WIP...
+Bakery can be installed with the following methods:
+* [Go](#go)
+
+### Go
+Use the `go` CLI tool to install Bakery:
+```bash
+go install github.com/kampanosg/bakery@latest
+```
 
 ## Usage
 
 ### The Bakefile
+Bakery, by default, looks for a `Bakefile` from the directory that is executed. The `Bakefile`, should follow the YAML structure and contain the keywords and syntax described bellow. 
 
+The `--file` flag can be passed to use a `Bakefile` in a different location. For example, `bake --file /path/to/Bakefile version`
 
 ### Syntax
+#### Keywords
 Below are the keywords that the `Bakefile` can contain
 
 | keyword    | type                | optional | description                                                               |
@@ -23,7 +33,9 @@ Below are the keywords that the `Bakefile` can contain
 | `defaults` | `[]string`          | Y        | a list of recipes that will be called if no recipe is passed at execution |
 | `recipes`  | `[]Recipe`          | N        | the list of recipes, see the table below how to define them               |
 
+#### Recipe
 The `Recipe` syntax is defined below
+
 | keyword       | type       | optional | description                                                           |
 | ------------- | ---------- | -------- | --------------------------------------------------------------------- |
 | `description` | `string`   | Y        | a brief explanation of what the recipe does. used for the `bake help` |
@@ -44,7 +56,7 @@ The following is an example `Bakefile` for a Go project. It includes examples fo
 ```yaml
 version: v1.2.3
 metadata:
-  author: "George K <name@email.com>"
+  author: "Darth Vader <vader@empire.org>"
 defaults:
   - build
 recipes:
