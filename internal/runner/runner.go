@@ -15,7 +15,7 @@ const (
 
 type (
 	CommandAgent interface {
-		Run(cmd string) error
+		Execute(cmd string) error
 	}
 
 	Runner struct {
@@ -43,7 +43,7 @@ func (r *Runner) RunCommand(b *models.Bakery, args []string) error {
 
 	switch input {
 	case HelpCmd:
-		print = r.GetPrintableVersion(b)
+		print = r.GetPrintableHelp(b)
 	case VersionCmd:
 		print = r.GetPrintableVersion(b)
 	case AuthorCmd:
@@ -52,7 +52,7 @@ func (r *Runner) RunCommand(b *models.Bakery, args []string) error {
 		return r.run(b, input)
 	}
 
-	fmt.Println(print)
+	fmt.Printf(print)
 
 	return nil
 }
@@ -77,7 +77,7 @@ func (r *Runner) runSteps(b *models.Bakery, steps []string) error {
 			continue
 		}
 
-		if err := r.agent.Run(step); err != nil {
+		if err := r.agent.Execute(step); err != nil {
 			return fmt.Errorf("unable to run step %s, %w", step, err)
 		}
 	}
@@ -108,7 +108,7 @@ func (r *Runner) GetPrintableHelp(b *models.Bakery) string {
 }
 
 func (r *Runner) GetPrintableVersion(b *models.Bakery) string {
-	return fmt.Sprintf("Bakefile Version: %s", b.Version)
+	return fmt.Sprintf("Bakefile Version: %s\n", b.Version)
 }
 
 func (r *Runner) GetPrintableAuthor(b *models.Bakery) string {
@@ -117,5 +117,6 @@ func (r *Runner) GetPrintableAuthor(b *models.Bakery) string {
 	if author, ok := b.Metadata["author"]; ok {
 		buffer.WriteString(fmt.Sprintf("%s", author))
 	}
+	buffer.WriteString("\n")
 	return buffer.String()
 }

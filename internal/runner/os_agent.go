@@ -8,7 +8,7 @@ import (
 
 type OSAgent struct{}
 
-func (e *OSAgent) Run(cmd string) error {
+func (e *OSAgent) Execute(cmd string) error {
 	c := exec.Command("sh", "-c", cmd)
 	c.Stdout = os.Stdout
 	c.Stderr = os.Stderr
