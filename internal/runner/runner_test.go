@@ -208,6 +208,25 @@ func TestRunner_RunCommand(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			name: "success, ignore failure",
+			fields: args{
+				b: &models.Bakery{
+					Recipes: map[string]models.Recipe{
+						"list": {
+							Steps: []string{"^lss -al"},
+						},
+					},
+				},
+				args: []string{"list"},
+			},
+			executor: &testCommandAgent{
+				executorHandler: func(cmd string) error {
+					return errors.New("syntaxt error, lss is not valid")
+				},
+			},
+			wantErr: false,
+		},
 	}
 
 	for _, tt := range tests {
