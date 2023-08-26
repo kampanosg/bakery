@@ -81,6 +81,8 @@ func (r *Runner) runSteps(b *models.Bakery, steps []string) error {
 			step = step[1:]
 		}
 
+		step = strings.TrimSpace(step)
+
 		cyanU.Printf("> %s\n", step)
 
 		recipe, ok := b.Recipes[step]

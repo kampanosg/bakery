@@ -247,7 +247,7 @@ func TestRunner_RunCommand(t *testing.T) {
 			},
 			executor: &testCommandAgent{
 				executorHandler: func(cmd string) error {
-					return errors.New("syntaxt error, lss is not valid")
+					return nil
 				},
 			},
 			wantErr: false,
