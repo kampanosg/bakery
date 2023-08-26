@@ -1,0 +1,14 @@
+version: 1.1.0
+metadata:
+    author: kampanosg
+default:
+    - test
+recipes:
+    test:
+        description: "test the code with go test"
+        steps:
+            - "go test -cover -parallel 1 ./..."
+    build:
+        description: "builds the code with go"
+        steps:
+            - "go build -o bake bakery.go"
