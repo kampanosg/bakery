@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/fatih/color"
 	"github.com/kampanosg/bakery/internal/models"
 )
 
@@ -14,6 +15,10 @@ const (
 	AuthorCmd  = "author"
 
 	IgnoreFailureToken = "^"
+)
+
+var (
+	printer = color.New(color.FgCyan)
 )
 
 type (
@@ -41,21 +46,21 @@ func (r *Runner) RunCommand(b *models.Bakery, args []string) error {
 		return r.runDefaults(b)
 	}
 
-	var print string
+	var msg string
 	input := args[0]
 
 	switch input {
 	case HelpCmd:
-		print = r.GetPrintableHelp(b)
+		msg = r.GetPrintableHelp(b)
 	case VersionCmd:
-		print = r.GetPrintableVersion(b)
+		msg = r.GetPrintableVersion(b)
 	case AuthorCmd:
-		print = r.GetPrintableAuthor(b)
+		msg = r.GetPrintableAuthor(b)
 	default:
 		return r.run(b, input)
 	}
 
-	fmt.Printf(print)
+	printer.Printf("%s", msg)
 
 	return nil
 }

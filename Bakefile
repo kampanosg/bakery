@@ -11,4 +11,5 @@ recipes:
     build:
         description: "builds the code with go"
         steps:
+            - "^rm bake"
             - "go build -o bake bakery.go"
