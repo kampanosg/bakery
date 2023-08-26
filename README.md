@@ -4,7 +4,7 @@
 
 Bakery is an (opinionated) automation tool designed to simplify repetitive, time-consuming and error prone commands. It uses YAML instead of a propriatery language and provides handy defaults, such as `help` and `version`. Its main goal is to make the developer experience more familiar, flexible and friendly while being fast and reliable.
 
-https://github.com/kampanosg/bakery/assets/30287348/deb1b130-042f-4e18-b792-2103fd5c008f
+https://github.com/kampanosg/bakery/assets/30287348/379cbb67-13a5-473e-992c-52209b0e2042
 
 ## Installation
 Bakery can be installed with the following methods:
