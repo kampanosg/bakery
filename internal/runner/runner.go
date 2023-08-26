@@ -70,7 +70,7 @@ func (r *Runner) run(b *models.Bakery, input string) error {
 
 func (r *Runner) runSteps(b *models.Bakery, steps []string) error {
 	for _, step := range steps {
-		ignoreFail := shouldIgnoreFailure(step)
+		ignoreFail := ignoreFail(step)
 		if ignoreFail {
 			step = step[1:]
 		}
@@ -132,6 +132,6 @@ func (r *Runner) GetPrintableAuthor(b *models.Bakery) string {
 	return buffer.String()
 }
 
-func shouldIgnoreFailure(step string) bool {
+func ignoreFail(step string) bool {
 	return strings.HasPrefix(step, IgnoreFailureToken)
 }
