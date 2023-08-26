@@ -2,12 +2,17 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"os"
 
+	"github.com/fatih/color"
 	"github.com/kampanosg/bakery/internal/loader"
 	"github.com/kampanosg/bakery/internal/parser"
 	"github.com/kampanosg/bakery/internal/runner"
+)
+
+var (
+	red   = color.New(color.FgRed)
+	green = color.New(color.FgGreen)
 )
 
 func main() {
@@ -26,14 +31,14 @@ func main() {
 	}
 
 	if err != nil {
-		fmt.Printf("unable to load the Bakefile, %v\n", err)
+		red.Printf("unable to load the Bakefile, %v\n", err)
 		return
 	}
 	defer f.Close()
 
 	recipe, err := parser.ParseBakefile(f)
 	if err != nil {
-		fmt.Printf("unable to parse the Bakefile, %v\n", err)
+		red.Printf("unable to parse the Bakefile, %v\n", err)
 		return
 	}
 
@@ -41,6 +46,9 @@ func main() {
 
 	r := runner.NewRunner(&runner.OSAgent{})
 	if err := r.RunCommand(recipe, args); err != nil {
-		fmt.Printf("run failed, %v\n", err)
+		red.Printf("run failed, %v\n", err)
+		return
 	}
+
+	green.Println("done!")
 }

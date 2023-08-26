@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/fatih/color"
 	"github.com/kampanosg/bakery/internal/models"
 )
 
@@ -14,6 +15,11 @@ const (
 	AuthorCmd  = "author"
 
 	IgnoreFailureToken = "^"
+)
+
+var (
+	cyan  = color.New(color.FgCyan)
+	cyanU = color.New(color.FgCyan).Add(color.Underline)
 )
 
 type (
@@ -41,21 +47,21 @@ func (r *Runner) RunCommand(b *models.Bakery, args []string) error {
 		return r.runDefaults(b)
 	}
 
-	var print string
+	var msg string
 	input := args[0]
 
 	switch input {
 	case HelpCmd:
-		print = r.GetPrintableHelp(b)
+		msg = r.GetPrintableHelp(b)
 	case VersionCmd:
-		print = r.GetPrintableVersion(b)
+		msg = r.GetPrintableVersion(b)
 	case AuthorCmd:
-		print = r.GetPrintableAuthor(b)
+		msg = r.GetPrintableAuthor(b)
 	default:
 		return r.run(b, input)
 	}
 
-	fmt.Printf(print)
+	cyan.Printf("%s", msg)
 
 	return nil
 }
@@ -75,7 +81,9 @@ func (r *Runner) runSteps(b *models.Bakery, steps []string) error {
 			step = step[1:]
 		}
 
-		fmt.Printf("%s\n", step)
+		step = strings.TrimSpace(step)
+
+		cyanU.Printf("> %s\n", step)
 
 		recipe, ok := b.Recipes[step]
 		if ok {
