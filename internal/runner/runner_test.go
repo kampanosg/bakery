@@ -227,6 +227,31 @@ func TestRunner_RunCommand(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			name: "success, ignore whitespace",
+			fields: args{
+				b: &models.Bakery{
+					Recipes: map[string]models.Recipe{
+						"clean": {
+							Steps: []string{"rm app"},
+						},
+						"build": {
+							Steps: []string{
+								"^ clean",
+								"go build -o app ./...",
+							},
+						},
+					},
+				},
+				args: []string{"build"},
+			},
+			executor: &testCommandAgent{
+				executorHandler: func(cmd string) error {
+					return errors.New("syntaxt error, lss is not valid")
+				},
+			},
+			wantErr: false,
+		},
 	}
 
 	for _, tt := range tests {

@@ -4,6 +4,10 @@ metadata:
 default:
     - test
 recipes:
+    clean:
+        description: "deletes executable"
+        steps:
+            - "rm bake"
     test:
         description: "test the code with go test"
         steps:
@@ -11,5 +15,5 @@ recipes:
     build:
         description: "builds the code with go"
         steps:
-            - "^rm bake"
+            - "^ clean"
             - "go build -o bake bakery.go"
