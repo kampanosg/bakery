@@ -3,6 +3,7 @@ package runner
 import (
 	"bytes"
 	"fmt"
+	"strings"
 
 	"github.com/kampanosg/bakery/internal/models"
 )
@@ -11,6 +12,8 @@ const (
 	HelpCmd    = "help"
 	VersionCmd = "version"
 	AuthorCmd  = "author"
+
+	IgnoreFailureToken = "^"
 )
 
 type (
@@ -67,6 +70,11 @@ func (r *Runner) run(b *models.Bakery, input string) error {
 
 func (r *Runner) runSteps(b *models.Bakery, steps []string) error {
 	for _, step := range steps {
+		ignoreFail := ignoreFail(step)
+		if ignoreFail {
+			step = step[1:]
+		}
+
 		fmt.Printf("%s\n", step)
 
 		recipe, ok := b.Recipes[step]
@@ -78,6 +86,9 @@ func (r *Runner) runSteps(b *models.Bakery, steps []string) error {
 		}
 
 		if err := r.agent.Execute(step); err != nil {
+			if ignoreFail {
+				continue
+			}
 			return fmt.Errorf("unable to run step %s, %w", step, err)
 		}
 	}
@@ -119,4 +130,8 @@ func (r *Runner) GetPrintableAuthor(b *models.Bakery) string {
 	}
 	buffer.WriteString("\n")
 	return buffer.String()
+}
+
+func ignoreFail(step string) bool {
+	return strings.HasPrefix(step, IgnoreFailureToken)
 }

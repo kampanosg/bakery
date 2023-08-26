@@ -1,4 +1,3 @@
-
 # bakery 🧁 
 
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/kampanosg/bakery/go.yml?style=for-the-badge&logo=go)
@@ -45,6 +44,13 @@ The `Recipe` syntax is defined below
 
 ℹ️ A `step` can reference a `recipe`
 
+#### Special Characters
+Some special keywords that are available to the `Bakefile`
+
+| character | usage | description                                                              |
+| --------- | ----- | ------------------------------------------------------------------------ |
+| `^`       | steps | prefix a step with this keyword to ignore errors and continue the recipe |
+
 ### Builtins
 The following builtin functions are available with `bake`
 
@@ -79,4 +85,9 @@ recipes:
       - test
       - build
       - "./app"
+  ignore-fail:
+    description: "prefix a step with ^ to ignore the failure"
+    steps:
+        - "^lss -abcdf ./not/valid/dir"
+        - "echo 'i will execute fine'"
 ```
