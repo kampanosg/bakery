@@ -50,5 +50,5 @@ func main() {
 		return
 	}
 
-	green.Println("done")
+	green.Println("done!")
 }
