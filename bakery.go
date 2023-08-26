@@ -11,7 +11,8 @@ import (
 )
 
 var (
-	c = color.New(color.FgRed)
+	red   = color.New(color.FgRed)
+	green = color.New(color.FgGreen)
 )
 
 func main() {
@@ -30,14 +31,14 @@ func main() {
 	}
 
 	if err != nil {
-		c.Printf("unable to load the Bakefile, %v\n", err)
+		red.Printf("unable to load the Bakefile, %v\n", err)
 		return
 	}
 	defer f.Close()
 
 	recipe, err := parser.ParseBakefile(f)
 	if err != nil {
-		c.Printf("unable to parse the Bakefile, %v\n", err)
+		red.Printf("unable to parse the Bakefile, %v\n", err)
 		return
 	}
 
@@ -45,6 +46,9 @@ func main() {
 
 	r := runner.NewRunner(&runner.OSAgent{})
 	if err := r.RunCommand(recipe, args); err != nil {
-		c.Printf("run failed, %v\n", err)
+		red.Printf("run failed, %v\n", err)
+		return
 	}
+
+	green.Println("done")
 }

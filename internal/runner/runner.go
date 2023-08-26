@@ -18,7 +18,8 @@ const (
 )
 
 var (
-	printer = color.New(color.FgCyan)
+	cyan  = color.New(color.FgCyan)
+	cyanU = color.New(color.FgCyan).Add(color.Underline)
 )
 
 type (
@@ -60,7 +61,7 @@ func (r *Runner) RunCommand(b *models.Bakery, args []string) error {
 		return r.run(b, input)
 	}
 
-	printer.Printf("%s", msg)
+	cyan.Printf("%s", msg)
 
 	return nil
 }
@@ -80,7 +81,7 @@ func (r *Runner) runSteps(b *models.Bakery, steps []string) error {
 			step = step[1:]
 		}
 
-		fmt.Printf("%s\n", step)
+		cyanU.Printf("> %s\n", step)
 
 		recipe, ok := b.Recipes[step]
 		if ok {
