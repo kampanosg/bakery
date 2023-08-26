@@ -7,7 +7,7 @@ recipes:
     clean:
         description: "deletes executable"
         steps:
-            - "^rm bakefilenotexists"
+            - "^rm bake"
     test:
         description: "test the code with go test"
         steps:
