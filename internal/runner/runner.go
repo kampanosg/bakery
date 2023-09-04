@@ -83,11 +83,11 @@ func (r *Runner) runSteps(b *models.Bakery, steps []string) error {
 
 		step = strings.TrimSpace(step)
 
-		cyanU.Printf("> %s\n", step)
+		cyanU.Printf("-> %s\n", step)
 
 		recipe, ok := b.Recipes[step]
 		if ok {
-			if err := r.runSteps(b, recipe.Steps); err != nil {
+			if err := r.runSteps(b, recipe.Steps); !ignoreFail && err != nil {
 				return fmt.Errorf("unable to run steps, %w", err)
 			}
 			continue
