@@ -1,4 +1,4 @@
-version: 1.1.0
+version: 1.1.1
 metadata:
     author: kampanosg
 defaults:
@@ -7,7 +7,7 @@ recipes:
     clean:
         description: "deletes executable"
         steps:
-            - "^rm bake"
+            - "rm bake"
     test:
         description: "test the code with go test"
         steps:
@@ -15,5 +15,5 @@ recipes:
     build:
         description: "builds the code with go"
         steps:
-            - "clean"
+            - "^ clean"
             - "go build -o bake bakery.go"
