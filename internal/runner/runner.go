@@ -47,21 +47,22 @@ func (r *Runner) RunCommand(b *models.Bakery, args []string) error {
 	}
 
 	var msg string
-	input := args[0]
 
-	switch input {
-	case HelpCmd:
-		msg = r.GetPrintableHelp(b)
-	case VersionCmd:
-		msg = r.GetPrintableVersion(b)
-	case AuthorCmd:
-		msg = r.GetPrintableAuthor(b)
-	default:
-		return r.run(b, input)
+	for _, input := range args {
+
+		switch input {
+		case HelpCmd:
+			msg = r.GetPrintableHelp(b)
+		case VersionCmd:
+			msg = r.GetPrintableVersion(b)
+		case AuthorCmd:
+			msg = r.GetPrintableAuthor(b)
+		default:
+			return r.run(b, input)
+		}
+
+		cyan.Printf("%s", msg)
 	}
-
-	cyan.Printf("%s", msg)
-
 	return nil
 }
 
