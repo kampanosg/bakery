@@ -252,6 +252,31 @@ func TestRunner_RunCommand(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			name: "success, multiple recipes",
+			fields: args{
+				b: &models.Bakery{
+					Recipes: map[string]models.Recipe{
+						"clean": {
+							Steps: []string{"rm app"},
+						},
+						"build": {
+							Steps: []string{
+								"^ clean",
+								"go build -o app ./...",
+							},
+						},
+					},
+				},
+				args: []string{"build", "clean"},
+			},
+			executor: &testCommandAgent{
+				executorHandler: func(cmd string) error {
+					return nil
+				},
+			},
+			wantErr: false,
+		},
 	}
 
 	for _, tt := range tests {
