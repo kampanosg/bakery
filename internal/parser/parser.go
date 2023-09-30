@@ -30,35 +30,43 @@ func ParseBakefile(f *os.File) (*models.Bakery, error) {
 		return nil, fmt.Errorf("invalid Bakefile, %w", err)
 	}
 
-	// vars := make(map[string]string, len(b.Variables))
-
 	recipes := make(map[string]models.Recipe, len(b.Recipes))
 	for k, recipe := range b.Recipes {
 		steps := make([]string, len(recipe.Steps))
 		for i, step := range recipe.Steps {
-			fmt.Printf("step: %s\n", step)
-			vars := r.FindAllString(step, -1)
-			fmt.Printf("vars: %v\n", vars)
+			vars := getVariables(step)
 			if len(vars) == 0 {
 				continue
 			}
 			for _, v := range vars {
-				vv := v[1 : len(v)-1]
-				val, ok := b.Variables[vv]
-				if !ok {
-					return nil, fmt.Errorf("variable %s not found", vv)
+				if step, err = extrapolate(&b, step, v); err != nil {
+					return nil, fmt.Errorf("cannot parse step %s, %w", step, err)
 				}
-				step = strings.ReplaceAll(step, v, val)
-				fmt.Printf("replaced: %s\n", step)
 			}
 			steps[i] = step
 		}
+
 		recipe.Steps = steps
 		recipes[k] = recipe
 	}
+
 	b.Recipes = recipes
-	fmt.Printf("b: %+v\n", b)
-	panic("stop")
 
 	return &b, nil
+}
+
+// getVariables returns a slice of strings that match the regex
+// it's in its own function to make testing easier
+func getVariables(s string) []string {
+	return r.FindAllString(s, -1)
+}
+
+// extrapolate replaces the variable with its value
+func extrapolate(b *models.Bakery, step, v string) (string, error) {
+	vv := v[1 : len(v)-1] // remove the colons
+	val, ok := b.Variables[vv]
+	if !ok {
+		return "", fmt.Errorf("variable %s not found", vv)
+	}
+	return strings.ReplaceAll(step, v, val), nil
 }
