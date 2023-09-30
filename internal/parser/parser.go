@@ -35,12 +35,11 @@ func ParseBakefile(f *os.File) (*models.Bakery, error) {
 		steps := make([]string, len(recipe.Steps))
 		for i, step := range recipe.Steps {
 			vars := getVariables(step)
-			if len(vars) == 0 {
-				continue
-			}
-			for _, v := range vars {
-				if step, err = extrapolate(&b, step, v); err != nil {
-					return nil, fmt.Errorf("cannot parse step %s, %w", step, err)
+			if len(vars) > 0 {
+				for _, v := range vars {
+					if step, err = extrapolate(&b, step, v); err != nil {
+						return nil, fmt.Errorf("cannot extrapolate vars, %w", err)
+					}
 				}
 			}
 			steps[i] = step
@@ -66,7 +65,7 @@ func extrapolate(b *models.Bakery, step, v string) (string, error) {
 	vv := v[1 : len(v)-1] // remove the colons
 	val, ok := b.Variables[vv]
 	if !ok {
-		return "", fmt.Errorf("variable %s not found", vv)
+		return "", fmt.Errorf("variable :%s: not found", vv)
 	}
 	return strings.ReplaceAll(step, v, val), nil
 }
