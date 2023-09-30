@@ -31,22 +31,22 @@ func ParseBakefile(f *os.File) (*models.Bakery, error) {
 	}
 
 	recipes := make(map[string]models.Recipe, len(b.Recipes))
-	for k, recipe := range b.Recipes {
-		steps := make([]string, len(recipe.Steps))
-		for i, step := range recipe.Steps {
-			vars := getVariables(step)
+	for k, r := range b.Recipes {
+		steps := make([]string, len(r.Steps))
+		for i, s := range r.Steps {
+			vars := parseVars(s)
 			if len(vars) > 0 {
 				for _, v := range vars {
-					if step, err = extrapolate(&b, step, v); err != nil {
+					if s, err = extrapolate(&b, s, v); err != nil {
 						return nil, fmt.Errorf("cannot extrapolate vars, %w", err)
 					}
 				}
 			}
-			steps[i] = step
+			steps[i] = s
 		}
 
-		recipe.Steps = steps
-		recipes[k] = recipe
+		r.Steps = steps
+		recipes[k] = r
 	}
 
 	b.Recipes = recipes
@@ -54,9 +54,9 @@ func ParseBakefile(f *os.File) (*models.Bakery, error) {
 	return &b, nil
 }
 
-// getVariables returns a slice of strings that match the regex
+// parseVars returns a slice of strings that match the regex
 // e.g. i am :name:, :age: years old -> [:name:, :age:]
-func getVariables(s string) []string {
+func parseVars(s string) []string {
 	return r.FindAllString(s, -1)
 }
 
