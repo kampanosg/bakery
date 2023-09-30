@@ -6,7 +6,7 @@ type (
 	Bakery struct {
 		Version   string            `yaml:"version"`
 		Metadata  map[string]string `yaml:"metadata"`
-		Variables map[string]any    `yaml:"variables"`
+		Variables map[string]string `yaml:"variables"`
 		Defaults  []string          `yaml:"defaults"`
 		Recipes   map[string]Recipe `yaml:"recipes"`
 	}
