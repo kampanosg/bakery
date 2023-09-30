@@ -44,6 +44,14 @@ func TestParseBakefile(t *testing.T) {
 			wantErr: true,
 		},
 		{
+			name: "error wrong variable",
+			args: args{
+				path: "test-files/Bakefile-wrong-vars",
+			},
+			want:    nil,
+			wantErr: true,
+		},
+		{
 			name: "success with version",
 			args: args{
 				path: "test-files/Bakefile-version",
@@ -65,7 +73,7 @@ func TestParseBakefile(t *testing.T) {
 			},
 			want: &models.Bakery{
 				Metadata: map[string]string{
-					"author": "Golan Trevize",
+					"author": "Darth Vader",
 				},
 				Recipes: map[string]models.Recipe{
 					"list": {
@@ -98,13 +106,39 @@ func TestParseBakefile(t *testing.T) {
 			want: &models.Bakery{
 				Version: "v1",
 				Metadata: map[string]string{
-					"author": "Golan Trevize",
+					"author": "Darth Vader",
+				},
+				Variables: map[string]string{
+					"path": "/home/darth-vader",
 				},
 				Defaults: []string{"list"},
 				Recipes: map[string]models.Recipe{
-					"list": {
-						Steps:       []string{"ls -al"},
-						Description: "list the current directory",
+					"create-user": {
+						Steps: []string{
+							"ls -al",
+							"mkdir /home/darth-vader",
+						},
+						Description: "creates the user dir",
+					},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "success with multiple vars",
+			args: args{
+				path: "test-files/Bakefile-multiple-vars",
+			},
+			want: &models.Bakery{
+				Variables: map[string]string{
+					"path": "/home/darth-vader",
+					"file": "passwords.txt",
+				},
+				Recipes: map[string]models.Recipe{
+					"create-pwords": {
+						Steps: []string{
+							"touch /home/darth-vader/passwords.txt",
+						},
 					},
 				},
 			},
