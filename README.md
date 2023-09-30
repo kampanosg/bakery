@@ -27,12 +27,13 @@ The `--file` flag can be passed to use a `Bakefile` in a different location. For
 #### Keywords
 Below are the keywords that the `Bakefile` can contain
 
-| keyword    | type                | optional | description                                                               |
-| ---------- | ------------------- | -------- | ------------------------------------------------------------------------- |
-| `version`  | `string`            | Y        | a user-defined version that can have any format e.g: `1` or `v1.2.3`      |
-| `metadata` | `map[string]string` | Y        | any user-defined key-value pair. for example: `author: John`              |
-| `defaults` | `[]string`          | Y        | a list of recipes that will be called if no recipe is passed at execution |
-| `recipes`  | `[]Recipe`          | N        | the list of recipes, see the table below how to define them               |
+| keyword    | type                | optional | description                                                                    |
+| ---------- | ------------------- | -------- | ------------------------------------------------------------------------------ |
+| `version`  | `string`            | Y        | a user-defined version that can have any format e.g: `1` or `v1.2.3`           |
+| `metadata` | `map[string]string` | Y        | any user-defined key-value pair. for example: `author: John`                   |
+| `variables`| `map[string]string` | Y        | user defined variables that can be used in the recipes with the `:var:` syntax |
+| `defaults` | `[]string`          | Y        | a list of recipes that will be called if no recipe is passed at execution      |
+| `recipes`  | `[]Recipe`          | N        | the list of recipes, see the table below how to define them                    |
 
 #### Recipe
 The `Recipe` syntax is defined below
@@ -67,14 +68,16 @@ The following is an example `Bakefile` for a Go project. It includes examples fo
 version: v1.2.3
 metadata:
   author: "Darth Vader <vader@empire.org>"
+variables:
+  name: app
 defaults:
   - build
 recipes:
   build:
     description: "builds the project"
     steps:
-      - "rm app"
-      - "go build -p app ./..."
+      - "rm :name:"
+      - "go build -p :name: ./..."
   test:
     description: "tests the project"
     steps:
