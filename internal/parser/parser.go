@@ -2,7 +2,7 @@ package parser
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"regexp"
 	"strings"
@@ -16,7 +16,7 @@ var (
 )
 
 func ParseBakefile(f *os.File) (*models.Bakery, error) {
-	content, err := ioutil.ReadAll(f)
+	content, err := io.ReadAll(f)
 	if err != nil {
 		return nil, fmt.Errorf("cannot read file, %w", err)
 	}
@@ -55,7 +55,7 @@ func ParseBakefile(f *os.File) (*models.Bakery, error) {
 }
 
 // getVariables returns a slice of strings that match the regex
-// it's in its own function to make testing easier
+// e.g. i am :name:, :age: years old -> [:name:, :age:]
 func getVariables(s string) []string {
 	return r.FindAllString(s, -1)
 }

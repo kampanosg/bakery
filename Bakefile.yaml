@@ -3,23 +3,19 @@ metadata:
   author: kampanosg
 variables:
   name: bake
-  age: 19
 defaults:
   - test
 recipes:
-  # clean:
-  #   description: "deletes executable"
-  #   steps:
-  #     - "rm :name:"
-  #   test:
-  #     description: "test the code with go test"
-  #     steps:
-  #       - "go test -cover -parallel 1 ./..."
-  #   build:
-  #     description: "builds the code with go"
-  #     steps:
-  #       - "^ clean"
-  #       - "go build -o :name: bakery.go"
-    poo:
-      steps:
-        - "echo :name: :name: :name: :age:"
+  clean:
+    description: "deletes executable"
+    steps:
+      - "rm :name:"
+  test:
+    description: "test the code with go test"
+    steps:
+      - "go test -cover -parallel 1 ./..."
+  build:
+    description: "builds the code with go"
+    steps:
+      - "^ clean"
+      - "go build -o :name: bakery.go"
