@@ -94,4 +94,8 @@ recipes:
     steps:
         - "^lss -abcdf ./not/valid/dir"
         - "echo 'i will execute fine'"
+help: |
+  This is an example help message. It will override the built-in `bake help`
+
+  And it can be multiline as well!
 ```
