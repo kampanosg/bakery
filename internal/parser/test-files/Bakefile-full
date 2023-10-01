@@ -1,10 +1,13 @@
 version: v1
 metadata:
-    author: "Golan Trevize"
+    author: "Darth Vader"
+variables:
+    path: "/home/darth-vader"
 defaults:
     - list
 recipes:
-    list:
-        description: "list the current directory"
+    create-user:
+        description: "creates the user dir"
         steps:
             - "ls -al"
+            - "mkdir :path:"

@@ -1,0 +1,7 @@
+variables:
+    path: "/home/darth-vader"
+    file: "passwords.txt"
+recipes:
+    create-pwords:
+        steps:
+            - "touch :path:/:file:"

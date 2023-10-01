@@ -1,0 +1,6 @@
+variables:
+    path: "/home/darth-vader"
+recipes:
+    create-user:
+        steps:
+            - "mkdir :pth:"
