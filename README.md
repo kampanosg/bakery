@@ -34,6 +34,7 @@ Below are the keywords that the `Bakefile` can contain
 | `variables`| `map[string]string` | Y        | user defined variables that can be used in the recipes with the `:var:` syntax |
 | `defaults` | `[]string`          | Y        | a list of recipes that will be called if no recipe is passed at execution      |
 | `recipes`  | `[]Recipe`          | N        | the list of recipes, see the table below how to define them                    |
+| `help`     | `string`            | Y        | a custom message that overrides the built-in `bake help`                       |
 
 #### Recipe
 The `Recipe` syntax is defined below
