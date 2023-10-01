@@ -19,3 +19,12 @@ recipes:
     steps:
       - "^ clean"
       - "go build -o :name: bakery.go"
+help: |
+  varsion: 1.2
+  Welcome to the demo Bakefile! It provides a good starting point with all the available syntax.
+  Here's the available commands:
+    * clean: deletes the executable
+    * test: tests the code with go test
+    * build: builds the code with go
+
+  For more information visit https://github.com/kampanosg/bakery
