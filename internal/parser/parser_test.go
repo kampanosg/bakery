@@ -144,6 +144,20 @@ func TestParseBakefile(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			name: "success with custom help",
+			args: args{
+				path: "test-files/Bakefile-help",
+			},
+			want: &models.Bakery{
+				Help: "this is a custom help message",
+				Recipes: map[string]models.Recipe{
+					"list": {
+						Steps: []string{"ls -al"},
+					},
+				},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
