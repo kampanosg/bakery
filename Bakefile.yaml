@@ -20,3 +20,7 @@ recipes:
     steps:
       - "^ clean"
       - "go build -o :name: bakery.go"
+  format:
+    description: "formats the code with the go formatter"
+    steps:
+      - "go fmt ./..."
