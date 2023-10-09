@@ -477,6 +477,18 @@ func TestRunner_GetPrintableHelp(t *testing.T) {
 			},
 			want: "Available Recipes in Bakefile:\n- list: lists files in dir\n- build: builds the app\n",
 		},
+		{
+			name: "success when help is defined",
+			fields: fields{
+				agent: &testCommandAgent{},
+			},
+			args: args{
+				b: &models.Bakery{
+					Help: "This is the help",
+				},
+			},
+			want: "This is the help",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

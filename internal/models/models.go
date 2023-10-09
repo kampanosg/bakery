@@ -9,6 +9,7 @@ type (
 		Variables map[string]string `yaml:"variables"`
 		Defaults  []string          `yaml:"defaults"`
 		Recipes   map[string]Recipe `yaml:"recipes"`
+		Help      string            `yaml:"help"`
 	}
 
 	Recipe struct {

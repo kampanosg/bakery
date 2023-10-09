@@ -125,6 +125,10 @@ func (r *Runner) runSteps(b *models.Bakery, steps []string) error {
 }
 
 func (r *Runner) GetPrintableHelp(b *models.Bakery) string {
+	if b.Help != "" {
+		return b.Help
+	}
+
 	var buffer bytes.Buffer
 	buffer.WriteString("Available Recipes in Bakefile:\n")
 	for k, r := range b.Recipes {
