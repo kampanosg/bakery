@@ -144,6 +144,11 @@ func TestRunner_RunCommand(t *testing.T) {
 				},
 				args: []string{"list", "build"},
 			},
+			executor: &testCommandAgent{
+				executorHandler: func(cmd string) error {
+					return errors.New("unable to run command")
+				},
+			},
 			wantErr: true,
 		},
 		{
