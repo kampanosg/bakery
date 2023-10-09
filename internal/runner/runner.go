@@ -66,13 +66,30 @@ func (r *Runner) RunCommand(b *models.Bakery, args []string) error {
 }
 
 func (r *Runner) run(b *models.Bakery, input string) error {
-	rcp, ok := b.Recipes[input]
+	return r.rrr(b, input)
+}
+
+func (r *Runner) runDefaults(b *models.Bakery) error {
+	for _, d := range b.Defaults {
+		if err := r.rrr(b, d); err != nil {
+			return fmt.Errorf("unable to run defaults, %w", err)
+		}
+	}
+	return nil
+}
+
+func (r *Runner) rrr(b *models.Bakery, recipe string) error {
+	if b == nil {
+		return fmt.Errorf("nil bakery")
+	}
+
+	rcp, ok := b.Recipes[recipe]
 	if !ok {
-		return fmt.Errorf("undefined recipe, %s", input)
+		return fmt.Errorf("undefined recipe, %s", recipe)
 	}
 
 	if rcp.Private {
-		return fmt.Errorf("recipe %s is private", input)
+		return fmt.Errorf("recipe %s is private", recipe)
 	}
 
 	return r.runSteps(b, rcp.Steps)
@@ -107,20 +124,6 @@ func (r *Runner) runSteps(b *models.Bakery, steps []string) error {
 	return nil
 }
 
-func (r *Runner) runDefaults(b *models.Bakery) error {
-	for _, d := range b.Defaults {
-		recipe, ok := b.Recipes[d]
-		if !ok {
-			return fmt.Errorf("undefined recipe %s", d)
-		}
-
-		if err := r.runSteps(b, recipe.Steps); err != nil {
-			return fmt.Errorf("unable to run steps, %w", err)
-		}
-	}
-	return nil
-}
-
 func (r *Runner) GetPrintableHelp(b *models.Bakery) string {
 	var buffer bytes.Buffer
 	buffer.WriteString("Available Recipes in Bakefile:\n")
@@ -138,7 +141,7 @@ func (r *Runner) GetPrintableAuthor(b *models.Bakery) string {
 	var buffer bytes.Buffer
 	buffer.WriteString("Bakefile Author: ")
 	if author, ok := b.Metadata["author"]; ok {
-		buffer.WriteString(fmt.Sprintf("%s", author))
+		buffer.WriteString(author)
 	}
 	buffer.WriteString("\n")
 	return buffer.String()

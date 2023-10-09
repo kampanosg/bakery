@@ -16,26 +16,26 @@ func (e *testCommandAgent) Execute(cmd string) error {
 }
 
 func TestRunner_RunCommand(t *testing.T) {
-	type args struct {
+	type fields struct {
 		b    *models.Bakery
 		args []string
 	}
 	tests := []struct {
 		name     string
 		executor *testCommandAgent
-		fields   args
+		fields   fields
 		wantErr  bool
 	}{
 		{
 			name: "error nil bakery",
-			fields: args{
+			fields: fields{
 				args: []string{"list"},
 			},
 			wantErr: true,
 		},
 		{
 			name: "error undefined recipe",
-			fields: args{
+			fields: fields{
 				b: &models.Bakery{
 					Recipes: map[string]models.Recipe{
 						"build": {},
@@ -47,7 +47,7 @@ func TestRunner_RunCommand(t *testing.T) {
 		},
 		{
 			name: "error thrown by executor",
-			fields: args{
+			fields: fields{
 				b: &models.Bakery{
 					Recipes: map[string]models.Recipe{
 						"build": {
@@ -66,7 +66,7 @@ func TestRunner_RunCommand(t *testing.T) {
 		},
 		{
 			name: "error when default doesnt exist",
-			fields: args{
+			fields: fields{
 				b: &models.Bakery{
 					Defaults: []string{"run"},
 					Recipes: map[string]models.Recipe{
@@ -80,7 +80,7 @@ func TestRunner_RunCommand(t *testing.T) {
 		},
 		{
 			name: "error when default step fails",
-			fields: args{
+			fields: fields{
 				b: &models.Bakery{
 					Defaults: []string{"build"},
 					Recipes: map[string]models.Recipe{
@@ -98,8 +98,57 @@ func TestRunner_RunCommand(t *testing.T) {
 			wantErr: true,
 		},
 		{
+			name: "error when recipe is private",
+			fields: fields{
+				b: &models.Bakery{
+					Recipes: map[string]models.Recipe{
+						"build": {
+							Private: true,
+							Steps:   []string{"go build -o app ./..."},
+						},
+					},
+				},
+				args: []string{"build"},
+			},
+			wantErr: true,
+		},
+		{
+			name: "error when recipe is private and called from default",
+			fields: fields{
+				b: &models.Bakery{
+					Defaults: []string{"build"},
+					Recipes: map[string]models.Recipe{
+						"build": {
+							Private: true,
+							Steps:   []string{"go build -o app ./..."},
+						},
+					},
+				},
+				args: []string{},
+			},
+			wantErr: true,
+		},
+		{
+			name: "error when recipe is private and called from multiple args",
+			fields: fields{
+				b: &models.Bakery{
+					Recipes: map[string]models.Recipe{
+						"build": {
+							Private: true,
+							Steps:   []string{"go build -o app ./..."},
+						},
+						"list": {
+							Steps: []string{"ls -al"},
+						},
+					},
+				},
+				args: []string{"list", "build"},
+			},
+			wantErr: true,
+		},
+		{
 			name: "success when no defaults",
-			fields: args{
+			fields: fields{
 				b: &models.Bakery{
 					Defaults: []string{},
 					Recipes: map[string]models.Recipe{
@@ -118,7 +167,7 @@ func TestRunner_RunCommand(t *testing.T) {
 		},
 		{
 			name: "success defaults",
-			fields: args{
+			fields: fields{
 				b: &models.Bakery{
 					Defaults: []string{"build"},
 					Recipes: map[string]models.Recipe{
@@ -137,7 +186,7 @@ func TestRunner_RunCommand(t *testing.T) {
 		},
 		{
 			name: "success",
-			fields: args{
+			fields: fields{
 				b: &models.Bakery{
 					Recipes: map[string]models.Recipe{
 						"build": {
@@ -156,7 +205,7 @@ func TestRunner_RunCommand(t *testing.T) {
 		},
 		{
 			name: "success calling other recipes",
-			fields: args{
+			fields: fields{
 				b: &models.Bakery{
 					Recipes: map[string]models.Recipe{
 						"build": {
@@ -178,7 +227,7 @@ func TestRunner_RunCommand(t *testing.T) {
 		},
 		{
 			name: "success, print help",
-			fields: args{
+			fields: fields{
 				b: &models.Bakery{
 					Recipes: map[string]models.Recipe{
 						"build": {
@@ -200,7 +249,7 @@ func TestRunner_RunCommand(t *testing.T) {
 		},
 		{
 			name: "success, print version",
-			fields: args{
+			fields: fields{
 				b: &models.Bakery{
 					Version: "0.6.9",
 				},
@@ -210,7 +259,7 @@ func TestRunner_RunCommand(t *testing.T) {
 		},
 		{
 			name: "success, ignore failure",
-			fields: args{
+			fields: fields{
 				b: &models.Bakery{
 					Recipes: map[string]models.Recipe{
 						"list": {
@@ -229,7 +278,7 @@ func TestRunner_RunCommand(t *testing.T) {
 		},
 		{
 			name: "success, ignore whitespace",
-			fields: args{
+			fields: fields{
 				b: &models.Bakery{
 					Recipes: map[string]models.Recipe{
 						"clean": {
@@ -254,7 +303,7 @@ func TestRunner_RunCommand(t *testing.T) {
 		},
 		{
 			name: "success, multiple recipes",
-			fields: args{
+			fields: fields{
 				b: &models.Bakery{
 					Recipes: map[string]models.Recipe{
 						"clean": {
