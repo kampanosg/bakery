@@ -49,7 +49,6 @@ func (r *Runner) RunCommand(b *models.Bakery, args []string) error {
 	var msg string
 
 	for _, input := range args {
-
 		switch input {
 		case HelpCmd:
 			msg = r.GetPrintableHelp(b)
@@ -71,6 +70,11 @@ func (r *Runner) run(b *models.Bakery, input string) error {
 	if !ok {
 		return fmt.Errorf("undefined recipe, %s", input)
 	}
+
+	if rcp.Private {
+		return fmt.Errorf("recipe %s is private", input)
+	}
+
 	return r.runSteps(b, rcp.Steps)
 }
 
