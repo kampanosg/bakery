@@ -45,7 +45,7 @@ func main() {
 	args := parser.ParseArgs(os.Args)
 
 	r := runner.NewRunner(&runner.OSAgent{})
-	if err := r.RunCommand(recipe, args); err != nil {
+	if err := r.Run(recipe, args); err != nil {
 		red.Printf("run failed, %v\n", err)
 		return
 	}

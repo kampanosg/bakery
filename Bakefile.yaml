@@ -31,5 +31,6 @@ help: |
     * clean: deletes the executable
     * test: tests the code with go test
     * build: builds the code with go
+    * format: formats the code with the go formatter
 
   For more information visit https://github.com/kampanosg/bakery

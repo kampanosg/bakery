@@ -37,13 +37,13 @@ func NewRunner(e CommandAgent) *Runner {
 	}
 }
 
-func (r *Runner) RunCommand(b *models.Bakery, args []string) error {
+func (r *Runner) Run(b *models.Bakery, args []string) error {
 	if b == nil {
 		return fmt.Errorf("nil bakery")
 	}
 
 	if len(args) == 0 {
-		return r.runDefaults(b)
+		return r.doRun(b, b.Defaults)
 	}
 
 	var msg string
@@ -57,7 +57,9 @@ func (r *Runner) RunCommand(b *models.Bakery, args []string) error {
 		case AuthorCmd:
 			msg = r.GetPrintableAuthor(b)
 		default:
-			return r.run(b, input)
+			if err := r.doRun(b, []string{input}); err != nil {
+				return err
+			}
 		}
 
 		cyan.Printf("%s", msg)
@@ -65,24 +67,16 @@ func (r *Runner) RunCommand(b *models.Bakery, args []string) error {
 	return nil
 }
 
-func (r *Runner) run(b *models.Bakery, input string) error {
-	return r.rrr(b, input)
-}
-
-func (r *Runner) runDefaults(b *models.Bakery) error {
-	for _, d := range b.Defaults {
-		if err := r.rrr(b, d); err != nil {
+func (r *Runner) doRun(b *models.Bakery, rcps []string) error {
+	for _, rcp := range rcps {
+		if err := r.runRecipe(b, rcp); err != nil {
 			return fmt.Errorf("unable to run defaults, %w", err)
 		}
 	}
 	return nil
 }
 
-func (r *Runner) rrr(b *models.Bakery, recipe string) error {
-	if b == nil {
-		return fmt.Errorf("nil bakery")
-	}
-
+func (r *Runner) runRecipe(b *models.Bakery, recipe string) error {
 	rcp, ok := b.Recipes[recipe]
 	if !ok {
 		return fmt.Errorf("undefined recipe, %s", recipe)
