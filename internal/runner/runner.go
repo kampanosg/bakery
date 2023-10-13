@@ -37,13 +37,13 @@ func NewRunner(e CommandAgent) *Runner {
 	}
 }
 
-func (r *Runner) RunCommand(b *models.Bakery, args []string) error {
+func (r *Runner) Run(b *models.Bakery, args []string) error {
 	if b == nil {
 		return fmt.Errorf("nil bakery")
 	}
 
 	if len(args) == 0 {
-		return r.runDefaults(b)
+		return r.doRun(b, b.Defaults)
 	}
 
 	var msg string
@@ -57,7 +57,9 @@ func (r *Runner) RunCommand(b *models.Bakery, args []string) error {
 		case AuthorCmd:
 			msg = r.GetPrintableAuthor(b)
 		default:
-			return r.run(b, input)
+			if err := r.doRun(b, []string{input}); err != nil {
+				return err
+			}
 		}
 
 		cyan.Printf("%s", msg)
@@ -65,11 +67,25 @@ func (r *Runner) RunCommand(b *models.Bakery, args []string) error {
 	return nil
 }
 
-func (r *Runner) run(b *models.Bakery, input string) error {
-	rcp, ok := b.Recipes[input]
-	if !ok {
-		return fmt.Errorf("undefined recipe, %s", input)
+func (r *Runner) doRun(b *models.Bakery, rcps []string) error {
+	for _, rcp := range rcps {
+		if err := r.runRecipe(b, rcp); err != nil {
+			return fmt.Errorf("unable to run defaults, %w", err)
+		}
 	}
+	return nil
+}
+
+func (r *Runner) runRecipe(b *models.Bakery, recipe string) error {
+	rcp, ok := b.Recipes[recipe]
+	if !ok {
+		return fmt.Errorf("undefined recipe, %s", recipe)
+	}
+
+	if rcp.Private {
+		return fmt.Errorf("recipe %s is private", recipe)
+	}
+
 	return r.runSteps(b, rcp.Steps)
 }
 
@@ -102,20 +118,6 @@ func (r *Runner) runSteps(b *models.Bakery, steps []string) error {
 	return nil
 }
 
-func (r *Runner) runDefaults(b *models.Bakery) error {
-	for _, d := range b.Defaults {
-		recipe, ok := b.Recipes[d]
-		if !ok {
-			return fmt.Errorf("undefined recipe %s", d)
-		}
-
-		if err := r.runSteps(b, recipe.Steps); err != nil {
-			return fmt.Errorf("unable to run steps, %w", err)
-		}
-	}
-	return nil
-}
-
 func (r *Runner) GetPrintableHelp(b *models.Bakery) string {
 	if b.Help != "" {
 		return b.Help
@@ -137,7 +139,7 @@ func (r *Runner) GetPrintableAuthor(b *models.Bakery) string {
 	var buffer bytes.Buffer
 	buffer.WriteString("Bakefile Author: ")
 	if author, ok := b.Metadata["author"]; ok {
-		buffer.WriteString(fmt.Sprintf("%s", author))
+		buffer.WriteString(author)
 	}
 	buffer.WriteString("\n")
 	return buffer.String()

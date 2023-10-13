@@ -14,6 +14,7 @@ type (
 
 	Recipe struct {
 		Description string   `yaml:"description"`
+		Private     bool     `yaml:"private"`
 		Steps       []string `yaml:"steps"`
 	}
 )

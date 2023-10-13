@@ -43,6 +43,7 @@ The `Recipe` syntax is defined below
 | ------------- | ---------- | -------- | --------------------------------------------------------------------- |
 | `description` | `string`   | Y        | a brief explanation of what the recipe does. used for the `bake help` |
 | `steps`       | `[]string` | N        | the commands that the `recipe` executes                               |
+| `private`     | `bool`     | Y        | if set to true it cannot be called directly from the command line     |
 
 ℹ️ A `step` can reference a `recipe`
 
@@ -90,6 +91,7 @@ recipes:
       - build
       - "./app"
   ignore-fail:
+    private: true
     description: "prefix a step with ^ to ignore the failure"
     steps:
         - "^lss -abcdf ./not/valid/dir"

@@ -8,6 +8,7 @@ defaults:
 recipes:
     create-user:
         description: "creates the user dir"
+        private: false
         steps:
             - "ls -al"
             - "mkdir :path:"

@@ -8,6 +8,7 @@ defaults:
 recipes:
   clean:
     description: "deletes executable"
+    private: true
     steps:
       - "rm :name:"
   test:
@@ -19,6 +20,10 @@ recipes:
     steps:
       - "^ clean"
       - "go build -o :name: bakery.go"
+  format:
+    description: "formats the code with the go formatter"
+    steps:
+      - "go fmt ./..."
 help: |
   varsion: 1.2
   Welcome to the demo Bakefile! It provides a good starting point with all the available syntax.
@@ -26,5 +31,6 @@ help: |
     * clean: deletes the executable
     * test: tests the code with go test
     * build: builds the code with go
+    * format: formats the code with the go formatter
 
   For more information visit https://github.com/kampanosg/bakery
