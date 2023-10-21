@@ -1,6 +1,7 @@
 # bakery 🧁 
 
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/kampanosg/bakery/go.yml?style=for-the-badge&logo=go)
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/kampanosg/bakery/sec.yml?style=for-the-badge&logo=go&label=security)
 
 Bakery is an (opinionated) automation tool designed to simplify repetitive, time-consuming and error prone commands. It uses YAML instead of a propriatery language and provides handy defaults, such as `help` and `version`. Its main goal is to make the developer experience more familiar, flexible and friendly while being fast and reliable.
 
