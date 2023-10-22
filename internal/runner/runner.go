@@ -62,7 +62,9 @@ func (r *Runner) Run(b *models.Bakery, args []string) error {
 			}
 		}
 
-		cyan.Printf("%s", msg)
+		if _, err := cyan.Printf("%s", msg); err != nil {
+			fmt.Printf("%s\n", msg)
+		}
 	}
 	return nil
 }
@@ -98,7 +100,9 @@ func (r *Runner) runSteps(b *models.Bakery, steps []string) error {
 
 		step = strings.TrimSpace(step)
 
-		cyan.Printf("-> %s\n", step)
+		if _, err := cyan.Printf("-> %s\n", step); err != nil {
+			fmt.Printf("-> %s\n", step)
+		}
 
 		recipe, ok := b.Recipes[step]
 		if ok {

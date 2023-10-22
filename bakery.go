@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"os"
 
 	"github.com/fatih/color"
@@ -31,14 +32,18 @@ func main() {
 	}
 
 	if err != nil {
-		red.Printf("unable to load the Bakefile, %v\n", err)
+		if _, err := red.Printf("unable to load the Bakefile, %v\n", err); err != nil {
+			fmt.Printf("unable to load the Bakefile, %v\n, err")
+		}
 		return
 	}
 	defer f.Close()
 
 	recipe, err := parser.ParseBakefile(f)
 	if err != nil {
-		red.Printf("unable to parse the Bakefile, %v\n", err)
+		if _, err := red.Printf("unable to parse the Bakefile, %v\n", err); err != nil {
+			fmt.Printf("unable to parse the Bakefile, %v\n", err)
+		}
 		return
 	}
 
@@ -46,7 +51,9 @@ func main() {
 
 	r := runner.NewRunner(&runner.OSAgent{})
 	if err := r.Run(recipe, args); err != nil {
-		red.Printf("run failed, %v\n", err)
+		if _, err := red.Printf("run failed, %v\n", err); err != nil {
+			fmt.Printf("run failed, %v\n", err)
+		}
 		return
 	}
 
