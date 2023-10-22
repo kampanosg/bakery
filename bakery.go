@@ -33,7 +33,7 @@ func main() {
 
 	if err != nil {
 		if _, err := red.Printf("unable to load the Bakefile, %v\n", err); err != nil {
-			fmt.Printf("unable to load the Bakefile, %v\n, err")
+			fmt.Printf("unable to load the Bakefile, %v\n", err)
 		}
 		return
 	}
