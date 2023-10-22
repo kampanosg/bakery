@@ -1,9 +1,13 @@
 package loader
 
-import "os"
+import (
+	"os"
+	"path/filepath"
+)
 
 type DefaultFileOpener struct{}
 
 func (f *DefaultFileOpener) Open(path string) (*os.File, error) {
-	return os.Open(path)
+	p := filepath.Clean(path)
+	return os.Open(p)
 }
