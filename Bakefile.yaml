@@ -1,4 +1,4 @@
-version: 1.2
+version: 1.3.2
 metadata:
   author: kampanosg
 variables:
@@ -19,13 +19,13 @@ recipes:
     description: "builds the code with go"
     steps:
       - "^ clean"
-      - "go build -o :name: bakery.go"
+      - "go build -o :name: bake.go"
   format:
     description: "formats the code with the go formatter"
     steps:
       - "go fmt ./..."
 help: |
-  varsion: 1.2
+  varsion: 1.3.2
   Welcome to the demo Bakefile! It provides a good starting point with all the available syntax.
   Here's the available commands:
     * clean: deletes the executable
