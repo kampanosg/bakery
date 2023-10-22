@@ -57,5 +57,7 @@ func main() {
 		return
 	}
 
-	green.Println("done!")
+	if _, err := green.Println("done!"); err != nil {
+		fmt.Printf("done!\n")
+	}
 }
