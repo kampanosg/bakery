@@ -1,2 +1,2 @@
-bake
+cmd/bake/bake
 .DS_Store
