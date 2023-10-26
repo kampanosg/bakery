@@ -14,10 +14,17 @@ Bakery can be installed with the following methods:
 ### Go
 Use the `go` CLI tool to install Bakery:
 ```bash
-go install github.com/kampanosg/bakery@latest
+go install github.com/kampanosg/bakery/cmd/bake@latest
 ```
 
 ## Usage
+
+### CLI
+To run a `Bakefile` and its available recipes, use the `bake` CLI tool. For example:
+```bash
+bake version
+bake build
+```
 
 ### The Bakefile
 Bakery, by default, looks for a `Bakefile` from the directory that is executed. The `Bakefile`, should follow the YAML structure and contain the keywords and syntax described bellow. 
