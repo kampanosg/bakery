@@ -72,7 +72,7 @@ func (r *Runner) Run(b *models.Bakery, args []string) error {
 func (r *Runner) doRun(b *models.Bakery, rcps []string) error {
 	for _, rcp := range rcps {
 		if err := r.runRecipe(b, rcp); err != nil {
-			return fmt.Errorf("unable to run defaults, %w", err)
+			return fmt.Errorf("unable to run recipe %s, %w", rcp, err)
 		}
 	}
 	return nil
