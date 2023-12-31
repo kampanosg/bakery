@@ -18,7 +18,15 @@ var (
 
 func main() {
 	file := flag.String("file", "", "custom location for a Bakefile")
+	vsn := flag.Bool("version", false, "the current version of the bake tool")
+	vbs := flag.Bool("verbose", false, "whether to print bake tool specific logs")
+	cpk := flag.Bool("cupcake", false, "bake a cupcake")
+
 	flag.Parse()
+
+	if *vsn {
+		return
+	}
 
 	var f *os.File
 	var err error
