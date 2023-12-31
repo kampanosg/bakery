@@ -23,7 +23,7 @@ var (
 func main() {
 	file := flag.String("file", "", "custom location for a Bakefile")
 	vsn := flag.Bool("version", false, "the current version of the bake tool")
-	// vbs := flag.Bool("verbose", false, "whether to print bake tool specific logs")
+	vbs := flag.Bool("verbose", false, "whether to print bake tool specific logs")
 	// cpk := flag.Bool("cupcake", false, "bake a cupcake")
 
 	flag.Parse()
@@ -62,15 +62,19 @@ func main() {
 
 	args := parser.ParseArgs(os.Args)
 
-	r := runner.NewRunner(&runner.OSAgent{})
+	r := runner.NewRunner(&runner.OSAgent{}, *vbs)
 	if err := r.Run(recipe, args); err != nil {
-		if _, err := red.Printf("run failed, %v\n", err); err != nil {
-			fmt.Printf("run failed, %v\n", err)
+		if *vbs {
+			if _, err := red.Printf("run failed, %v\n", err); err != nil {
+				fmt.Printf("run failed, %v\n", err)
+			}
 		}
 		return
 	}
 
-	if _, err := green.Println("done!"); err != nil {
-		fmt.Printf("done!\n")
+	if *vbs {
+		if _, err := green.Println("done!"); err != nil {
+			fmt.Printf("done!\n")
+		}
 	}
 }

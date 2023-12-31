@@ -27,13 +27,15 @@ type (
 	}
 
 	Runner struct {
-		agent CommandAgent
+		agent   CommandAgent
+		verbose bool
 	}
 )
 
-func NewRunner(e CommandAgent) *Runner {
+func NewRunner(e CommandAgent, v bool) *Runner {
 	return &Runner{
-		agent: e,
+		agent:   e,
+		verbose: v,
 	}
 }
 
@@ -62,8 +64,10 @@ func (r *Runner) Run(b *models.Bakery, args []string) error {
 			}
 		}
 
-		if _, err := cyan.Printf("%s", msg); err != nil {
-			fmt.Printf("%s\n", msg)
+		if r.verbose {
+			if _, err := cyan.Printf("%s", msg); err != nil {
+				fmt.Printf("%s\n", msg)
+			}
 		}
 	}
 	return nil

@@ -339,7 +339,8 @@ func TestRunner_RunCommand(t *testing.T) {
 
 			t.Parallel()
 
-			r := NewRunner(tc.executor)
+			vbs := false
+			r := NewRunner(tc.executor, vbs)
 
 			if err := r.Run(tc.fields.b, tc.fields.args); (err != nil) != tc.wantErr {
 				t.Errorf("Runner.RunCommand() error = %v, wantErr %v", err, tc.wantErr)
