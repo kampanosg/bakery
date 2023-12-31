@@ -24,13 +24,17 @@ func main() {
 	file := flag.String("file", "", "custom location for a Bakefile")
 	vsn := flag.Bool("version", false, "the current version of the bake tool")
 	vbs := flag.Bool("verbose", false, "whether to print bake tool specific logs")
-	// cpk := flag.Bool("cupcake", false, "bake a cupcake")
+	cpk := flag.Bool("cupcake", false, "bake a cupcake")
 
 	flag.Parse()
 
 	if *vsn {
 		fmt.Printf("bake version: %s\n", Version)
 		return
+	}
+
+	if *cpk {
+		fmt.Printf("%s\n", Cupcake)
 	}
 
 	var f *os.File
