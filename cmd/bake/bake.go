@@ -11,6 +11,10 @@ import (
 	"github.com/kampanosg/bakery/internal/runner"
 )
 
+const (
+	Version = "v1.5"
+)
+
 var (
 	red   = color.New(color.FgRed)
 	green = color.New(color.FgGreen)
@@ -19,12 +23,13 @@ var (
 func main() {
 	file := flag.String("file", "", "custom location for a Bakefile")
 	vsn := flag.Bool("version", false, "the current version of the bake tool")
-	vbs := flag.Bool("verbose", false, "whether to print bake tool specific logs")
-	cpk := flag.Bool("cupcake", false, "bake a cupcake")
+	// vbs := flag.Bool("verbose", false, "whether to print bake tool specific logs")
+	// cpk := flag.Bool("cupcake", false, "bake a cupcake")
 
 	flag.Parse()
 
 	if *vsn {
+		fmt.Printf("bake version: %s\n", Version)
 		return
 	}
 
