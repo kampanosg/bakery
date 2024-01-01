@@ -26,6 +26,25 @@ bake version
 bake build
 ```
 
+#### Flags
+The CLI ships with a set of command line flags that can be used to extract information from the tool or modify its behaviour.
+
+| flag       | description                                                                     | default |
+| ---------- | ------------------------------------------------------------------------------- | ------- |
+| `-version` | prints the current version of the tool                                          |         |
+| `-verbose` | controls the verbosity. if set to `true` the tool prints a lot more to `stdout` | `false` |
+| `-help`    | prints a help message with all the available flags                              |         |
+
+To use the flags, you can pass them directly to the CLI:
+
+```bash
+bake -version
+bake -verbose build
+bake -help
+```
+
+> :info: The `-verbose` flag can be used with recipes
+
 ### The Bakefile
 Bakery, by default, looks for a `Bakefile` from the directory that is executed. The `Bakefile`, should follow the YAML structure and contain the keywords and syntax described bellow. 
 
