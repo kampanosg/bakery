@@ -43,7 +43,7 @@ bake -verbose build
 bake -help
 ```
 
-> :info: The `-verbose` flag can be used with recipes
+> :information_source: The `-verbose` flag can be used with recipes
 
 ### The Bakefile
 Bakery, by default, looks for a `Bakefile` from the directory that is executed. The `Bakefile`, should follow the YAML structure and contain the keywords and syntax described bellow. 
