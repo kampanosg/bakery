@@ -72,7 +72,7 @@ The `Recipe` syntax is defined below
 | `steps`       | `[]string` | N        | the commands that the `recipe` executes                               |
 | `private`     | `bool`     | Y        | if set to true it cannot be called directly from the command line     |
 
-ℹ️ A `step` can reference a `recipe`
+> :information_source: A `step` can reference a `recipe`
 
 #### Special Characters
 Some special keywords that are available to the `Bakefile`
