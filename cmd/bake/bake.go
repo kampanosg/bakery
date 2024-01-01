@@ -35,6 +35,7 @@ func main() {
 
 	if *cpk {
 		fmt.Printf("%s\n", Cupcake)
+		return
 	}
 
 	var f *os.File
