@@ -64,10 +64,8 @@ func (r *Runner) Run(b *models.Bakery, args []string) error {
 			}
 		}
 
-		if r.verbose {
-			if _, err := cyan.Printf("%s", msg); err != nil {
-				fmt.Printf("%s\n", msg)
-			}
+		if _, err := cyan.Printf("%s", msg); err != nil {
+			fmt.Printf("%s\n", msg)
 		}
 	}
 	return nil
