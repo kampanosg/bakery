@@ -28,7 +28,7 @@ func TestBakefileLoader_LoadDefaultBakefile(t *testing.T) {
 			fields: fields{
 				Opener: &testFileOpener{
 					openerHandler: func(cmd string) (*os.File, error) {
-						return nil, errors.New("file not found")
+						return nil, nil
 					},
 				},
 			},
